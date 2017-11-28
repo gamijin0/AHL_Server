@@ -2,12 +2,39 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Fuck</title>
+    <title>   </title>
     <script src="{{url_for('static', filename='js/bootstrap.bundle.js')}}"></script>
     <script src="{{url_for('static', filename='js/bootstrap.js')}}"></script>
     <link href="{{url_for('static', filename='css/bootstrap.css')}}" rel="stylesheet">
     <link href="{{url_for('static', filename='css/bootstrap-grid.css')}}" rel="stylesheet">
     <link href="{{url_for('static', filename='css/bootstrap-reboot.css')}}" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://code.highcharts.com/stock/highstock.js"></script>
+    <script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+
+    <script>
+    Highcharts.chart('container', {
+
+        title: {
+            text: '折线图'
+        },
+
+        xAxis: {
+        		type: 'datetime'
+        },
+
+        series: [
+
+            {% for item in series_list %}
+                {
+                    name: '{{item["name"] }}',
+                    data: {{item["data"] }},
+                },
+            {% endfor %}
+        ]
+    });
+
+    </script>
 </head>
 <body>
 
@@ -39,5 +66,8 @@
                     {% endfor %}
         </table>
     {% endif %}
+
+
+    <div id="container" style="height: 400px; min-width: 310px"></div>
 </body>
 </html>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>   </title>
+    <title></title>
     <script src="{{url_for('static', filename='js/bootstrap.bundle.js')}}"></script>
     <script src="{{url_for('static', filename='js/bootstrap.js')}}"></script>
     <link href="{{url_for('static', filename='css/bootstrap.css')}}" rel="stylesheet">
@@ -17,18 +17,18 @@
 <body>
 
     <div class="container-fluid">
-    <form method="POST" action={{ url_for("pull") }}>
-        <div class="form-group">
-            <label>IMEI</label>
-            {% if IMEIS %}
-                <input type="text" class="form-control" id="IMEI" name="IMEI" placeholder="请输入想查询的IMEI号" value={{ IMEIS }}>
-            {% else %}
-                <input type="text" class="form-control" id="IMEI" name="IMEI" placeholder="请输入想查询的IMEI号">
-            {% endif %}
-        </div>
-        <button type="submit" class="btn btn-primary">查询</button>
-    </form>
-
+        <form method="POST" action={{ url_for("pull") }}>
+            <div class="form-group">
+                <h2>IMEI</h2>
+                {% if IMEIS %}
+                    <input type="text" class="form-control" id="IMEI" name="IMEI" placeholder="请输入想查询的IMEI号, 以分号为间隔" value={{ IMEIS }}>
+                {% else %}
+                    <input type="text" class="form-control" id="IMEI" name="IMEI" placeholder="请输入想查询的IMEI号, 以分号为间隔">
+                {% endif %}
+            </div>
+            <button type="submit" class="btn btn-primary">查询</button>
+        </form>
+    <div class="row">
     {% if node_list %}
         <table class="table table-dark">
             <thead>
@@ -45,12 +45,14 @@
                     {% endfor %}
         </table>
     {% endif %}
+    </div>
 
+            <div id="container" style="height: 400px; min-width: 310px"></div>
 
-    <div id="container" style="height: 400px; min-width: 310px"></div>
 </div>
 
     <script>
+        {% if series_list %}
     setTimeout(
     Highcharts.chart('container', {
 
@@ -73,7 +75,7 @@
         ]
     })
     , 1000);
-
+        {% endif %}
     </script>
 </body>
 </html>

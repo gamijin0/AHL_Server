@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Column,Integer,String,DateTime,Boolean,Date,Float
-
+import socket
 from flask import render_template,request,redirect,url_for
 
 app = Flask(__name__)
@@ -58,7 +58,7 @@ def push():
             ProductType = request.form['ProductType'],
             Temperature = float(request.form['Temperature']),
             IMSI = request.form['IMSI'],
-            IP = request.form['IP'],
+            IP = get_host_ip(),
             TSINumber = int(request.form['TSINumber']),
             UserNote = request.form['UserNote']
         )
@@ -80,12 +80,28 @@ def pull():
         attr_dict = dict(zip(attr_list,attr_list_CN))
         node_list = []
         print(request.form)
-        for IMEI in request.form['IMEI'].split():
+
+        imei = request.form["IMEI"].split(";")
+        imei_dict = dict(zip(imei,imei)) #去重
+        for IMEI in imei_dict:
             one = session.query(Node_info).filter(Node_info.IMEI==IMEI).first()
             node_list.append(one)
 
-        return render_template("nodes_info.html",node_list=node_list,attr_dict = attr_dict)
+        return render_template("nodes_info.html",node_list=node_list,attr_dict = attr_dict,IMEIS = request.form["IMEI"])
 
+
+
+
+
+def get_host_ip():
+    try:
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(('8.8.8.8', 80))
+        ip = s.getsockname()[0]
+    finally:
+        s.close()
+
+    return ip
 
 if(__name__=="__main__"):
     db.create_all()

@@ -11,12 +11,14 @@
 </head>
 <body>
 
-
-
     <form method="POST" action={{ url_for("pull") }}>
         <div class="form-group">
             <label>IMEI</label>
-            <input type="text" class="form-control" id="IMEI" name="IMEI" placeholder="请输入想查询的IMEI号">
+            {% if IMEIS %}
+                <input type="text" class="form-control" id="IMEI" name="IMEI" placeholder="请输入想查询的IMEI号" value={{ IMEIS }}>
+            {% else %}
+                <input type="text" class="form-control" id="IMEI" name="IMEI" placeholder="请输入想查询的IMEI号">
+            {% endif %}
         </div>
         <button type="submit" class="btn btn-primary">查询</button>
     </form>

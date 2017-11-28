@@ -13,6 +13,31 @@
     <script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
 
     <script>
+    setTimeout(
+    Highcharts.chart('container', {
+
+        title: {
+            text: '折线图'
+        },
+
+        xAxis: {
+        		type: 'datetime'
+        },
+
+        series: [
+
+            {% for item in series_list %}
+                {
+                    name: '{{item["name"] }}',
+                    data: {{item["data"] }},
+                },
+            {% endfor %}
+        ]
+    })
+    , 1000);
+
+        $.getJSON('https://www.highcharts.com/samples/data/jsonp.php?filename=aapl-c.json&callback=?', function (data) {
+    // Create the chart
     Highcharts.chart('container', {
 
         title: {
@@ -33,7 +58,7 @@
             {% endfor %}
         ]
     });
-
+});
     </script>
 </head>
 <body>

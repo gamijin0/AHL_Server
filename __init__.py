@@ -79,15 +79,39 @@ def pull():
         attr_list = ['Port', 'id', 'Producer', 'IMEI', 'ProductName', 'Temperature', 'IP', 'SiginalStrengh', 'PhoneNumber', 'IMSI', 'LightStrength', 'TSINumber', 'ProductType', 'UserName', 'SendTime', 'UserNote', 'Version', 'ProductSerialNumber', 'FrameID', 'Note']
         attr_dict = dict(zip(attr_list,attr_list_CN))
         node_list = []
+        series_temp_list = []
+        series_light_list = []
         print(request.form)
 
         imei = request.form["IMEI"].split(";")
         imei_dict = dict(zip(imei,imei)) #去重
-        for IMEI in imei_dict:
-            one = session.query(Node_info).filter(Node_info.IMEI==IMEI).first()
-            node_list.append(one)
 
-        return render_template("nodes_info.html",node_list=node_list,attr_dict = attr_dict,IMEIS = request.form["IMEI"])
+
+        for IMEI in imei_dict:
+            items = session.query(Node_info).filter(Node_info.IMEI==IMEI).all()
+            list.sort(items,key=lambda x:x.SendTime)
+
+            utc = [int((item.SendTime-datetime.datetime(1970,1,1)).total_seconds()) for item in items]
+            light_history = [item.LightStrength for  item in items]
+            temperature_history = [item.LightStrength for item in items]
+
+            series_temp = {
+                "name":"%s-温度" % IMEI,
+                "data":list(zip(utc,light_history))
+            }
+
+            print(series_temp)
+
+            series_temp_list.append(series_temp)
+            series_light = {
+                "name": "%s-光强" % IMEI,
+                "data": list(zip(utc, temperature_history))
+            }
+            series_light_list.append(series_light)
+
+            node_list.append(items[0])
+
+        return render_template("nodes_info.html",node_list=node_list,attr_dict = attr_dict,IMEIS = request.form["IMEI"],series_light_list = series_light_list,series_temp_list = series_temp_list)
 
 
 

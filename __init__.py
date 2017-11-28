@@ -75,13 +75,14 @@ def pull():
     if(request.method=="GET"):
         return render_template("nodes_info.html")
     else:
-
+        attr_list = ['Port', 'id', 'Producer', 'IMEI', 'ProductName', 'Temperature', 'IP', 'SiginalStrengh', 'PhoneNumber', 'IMSI', 'LightStrength', 'TSINumber', 'ProductType', 'UserName', 'SendTime', 'UserNote', 'Version', 'ProductSerialNumber', 'FrameID', 'Note']
         node_list = []
-        for IMEI in request['IMEI_list']:
+        print(request.form)
+        for IMEI in request.form['IMEI'].split():
             one = session.query(Node_info).filter(Node_info.IMEI==IMEI).first()
             node_list.append(one)
 
-        return render_template("nodes_info.html",node_list=node_list)
+        return render_template("nodes_info.html",node_list=node_list,attr_list = attr_list)
 
 
 if(__name__=="__main__"):

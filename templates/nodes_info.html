@@ -3,8 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <title>Fuck</title>
+    <script src="{{url_for('static', filename='js/bootstrap.bundle.js')}}"></script>
+    <script src="{{url_for('static', filename='js/bootstrap.js')}}"></script>
+    <link href="{{url_for('static', filename='css/bootstrap.css')}}" rel="stylesheet">
+    <link href="{{url_for('static', filename='css/bootstrap-grid.css')}}" rel="stylesheet">
+    <link href="{{url_for('static', filename='css/bootstrap-reboot.css')}}" rel="stylesheet">
 </head>
 <body>
 
+
+
+    <form method="POST" action={{ url_for("pull") }}>
+        <div class="form-group">
+            <label>IMEI</label>
+            <input type="text" class="form-control" id="IMEI" name="IMEI" placeholder="请输入想查询的IMEI号">
+        </div>
+        <button type="submit" class="btn btn-primary">查询</button>
+    </form>
+
+    {% if node_list %}
+        <table class="table table-dark">
+            <thead>
+                    {% for key in attr_list %}
+                        <td>{{ key }}</td>
+                    {% endfor %}
+            </thead>
+            {% for node in node_list %}
+                <tr>
+                    {% for key in attr_list  %}
+                        <td>{{ node.__dict__[key] }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
 </body>
 </html>

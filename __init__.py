@@ -93,7 +93,7 @@ def pull():
 
             utc = [int((item.SendTime-datetime.datetime(1970,1,1)).total_seconds()) for item in items]
             light_history = [item.LightStrength for  item in items]
-            temperature_history = [item.LightStrength for item in items]
+            temperature_history = [item.Temperature for item in items]
 
             series_temp = {
                 "name":"%s-温度" % IMEI,

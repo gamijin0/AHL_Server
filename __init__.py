@@ -75,14 +75,16 @@ def pull():
     if(request.method=="GET"):
         return render_template("nodes_info.html")
     else:
+        attr_list_CN = ["端口","ID","生产厂家","IMEI号","产品名称","温度","IP地址","信号强度","手机号","IMSI号","光照强度","TSI触摸次数","产品类型","用户名称","发送时间","用户备注","版本号","产品序列号","帧ID","备注"]
         attr_list = ['Port', 'id', 'Producer', 'IMEI', 'ProductName', 'Temperature', 'IP', 'SiginalStrengh', 'PhoneNumber', 'IMSI', 'LightStrength', 'TSINumber', 'ProductType', 'UserName', 'SendTime', 'UserNote', 'Version', 'ProductSerialNumber', 'FrameID', 'Note']
+        attr_dict = dict(zip(attr_list,attr_list_CN))
         node_list = []
         print(request.form)
         for IMEI in request.form['IMEI'].split():
             one = session.query(Node_info).filter(Node_info.IMEI==IMEI).first()
             node_list.append(one)
 
-        return render_template("nodes_info.html",node_list=node_list,attr_list = attr_list)
+        return render_template("nodes_info.html",node_list=node_list,attr_dict = attr_dict)
 
 
 if(__name__=="__main__"):

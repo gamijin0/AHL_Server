@@ -24,17 +24,17 @@
     {% if node_list %}
         <table class="table table-dark">
             <thead>
-                    {% for key in attr_list %}
-                        <td>{{ key }}</td>
+                    {% for key in attr_dict %}
+                        <td>{{ attr_dict[key] }}</td>
                     {% endfor %}
             </thead>
-            {% for node in node_list %}
-                <tr>
-                    {% for key in attr_list  %}
-                        <td>{{ node.__dict__[key] }}</td>
+                    {% for node in node_list %}
+                        <tr>
+                            {% for key in attr_dict  %}
+                                <td>{{ node.__dict__[key] }}</td>
+                            {% endfor %}
+                        </tr>
                     {% endfor %}
-                </tr>
-            {% endfor %}
         </table>
     {% endif %}
 </body>

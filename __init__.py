@@ -111,7 +111,9 @@ def pull():
 
             node_list.append(items[0])
 
-        return render_template("nodes_info.html",node_list=node_list,attr_dict = attr_dict,IMEIS = request.form["IMEI"],series_light_list = series_light_list,series_temp_list = series_temp_list)
+        series_list = series_light_list + series_temp_list
+
+        return render_template("nodes_info.html",node_list=node_list,attr_dict = attr_dict,IMEIS = request.form["IMEI"],series_light_list = series_light_list,series_temp_list = series_temp_list, series_list=series_list)
 
 
 

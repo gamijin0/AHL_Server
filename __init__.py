@@ -25,7 +25,7 @@ class Node_info(db.Model):
     SendTime = Column(DateTime)
     PhoneNumber = Column(String(11))
     SiginalStrengh  =Column(Integer)
-    LightStrength = Column(Integer)
+    LightStrength = Column(Float)
     Version = Column(String(10))
     ProductType = Column(String(20))
     Temperature = Column(Float)
@@ -53,7 +53,7 @@ def push():
             SendTime = datetime.datetime.now(),
             PhoneNumber = request.form['PhoneNumber'],
             SiginalStrengh = int(request.form['SiginalStrengh']),
-            LightStrength = int(float(request.form['LightStrength'])),
+            LightStrength = float(request.form['LightStrength']),
             Version = request.form['Version'],
             ProductType = request.form['ProductType'],
             Temperature = float(request.form['Temperature']),
@@ -75,7 +75,7 @@ def pull():
     if(request.method=="GET"):
         return render_template("nodes_info.html")
     else:
-        attr_list_CN = ["端口","ID","生产厂家","IMEI号","产品名称","温度","IP地址","信号强度","手机号","IMSI号","光照强度","TSI触摸次数","产品类型","用户名称","发送时间","用户备注","版本号","产品序列号","帧ID","备注"]
+        attr_list_CN = ["端口","ID","生产厂家","IMEI号","产品名称","温度","IP地址","信号强度","手机号","IMSI号","电池电量","TSI触摸次数","产品类型","用户名称","发送时间","用户备注","版本号","产品序列号","帧ID","备注"]
         attr_list = ['Port', 'id', 'Producer', 'IMEI', 'ProductName', 'Temperature', 'IP', 'SiginalStrengh', 'PhoneNumber', 'IMSI', 'LightStrength', 'TSINumber', 'ProductType', 'UserName', 'SendTime', 'UserNote', 'Version', 'ProductSerialNumber', 'FrameID', 'Note']
         attr_dict = dict(zip(attr_list,attr_list_CN))
         node_list = []
@@ -96,7 +96,7 @@ def pull():
             temperature_history = [item.Temperature for item in items]
 
             series_temp = {
-                "name":"%s-温度" % IMEI,
+                "name":"%s-电量" % IMEI,
                 "data":list(zip(utc,light_history))
             }
 
@@ -104,7 +104,7 @@ def pull():
 
             series_temp_list.append(series_temp)
             series_light = {
-                "name": "%s-光强" % IMEI,
+                "name": "%s-温度" % IMEI,
                 "data": list(zip(utc, temperature_history))
             }
             series_light_list.append(series_light)

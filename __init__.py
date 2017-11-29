@@ -53,7 +53,7 @@ def push():
             SendTime = datetime.datetime.now(),
             PhoneNumber = request.form['PhoneNumber'],
             SiginalStrengh = int(request.form['SiginalStrengh']),
-            LightStrength = int(request.form['LightStrength']),
+            LightStrength = int(float(request.form['LightStrength'])),
             Version = request.form['Version'],
             ProductType = request.form['ProductType'],
             Temperature = float(request.form['Temperature']),
@@ -109,7 +109,7 @@ def pull():
             }
             series_light_list.append(series_light)
 
-            node_list.append(items[0])
+            node_list.append(items[-1])
 
         series_list = series_light_list + series_temp_list
 
